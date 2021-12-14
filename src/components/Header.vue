@@ -1,10 +1,19 @@
 <template>
-  <header>TOKEN SWAPPING INTERFACE</header>
+  <header>
+    <h4>{{ mode }} mode</h4>
+    TOKEN SWAPPING INTERFACE
+    <Toggle :mode="mode" @toggle="$emit('toggle')" />
+  </header>
 </template>
 
 <script>
+import Toggle from '@/components/Toggle';
 export default {
   name: 'Header',
+  props: ['mode'],
+  components: {
+    Toggle
+  }
 };
 </script>
 
@@ -14,6 +23,7 @@ header {
   font-size: 35px;
   font-family: Helvetica, sans-serif;
   border-bottom: 2px solid #fff;
+  transition: background 0.3s ease-in-out;
   display: flex;
   justify-content: space-between;
   align-items: center;
