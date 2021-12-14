@@ -153,4 +153,15 @@ export default defineComponent({
   background: #153d6f;
   opacity: 0.4;
 }
+
+.tokenswap .errormessage {
+  background: #fce4e4;
+  border: 1px solid #fcc2c3;
+  color: #cc0033;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 5px;
+  margin-left: 10px;
+}
 </style>
