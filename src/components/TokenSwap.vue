@@ -125,4 +125,17 @@ export default defineComponent({
   background: #2172e5;
   color: #ffffff;
 }
+
+.tokenswap .displayvalues {
+  border: 1px solid #858585;
+  padding: 5px 25px 5px 25px;
+  background: #ffb6c1;
+  font-size: 17px;
+  font-family: Arial, sans-serif;
+}
+
+.dark .tokenswap .displayvalues {
+  background: #153d6f;
+  opacity: 0.4;
+}
 </style>
