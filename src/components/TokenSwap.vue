@@ -58,7 +58,7 @@ export default defineComponent({
       return store.getters.getPoolPrice;
     },
     balanceValidityCheck(): string {
-      return store.state.balanceValidity;
+      return store.getters.getBalanceValidity;
     },
     expectedTokenAmount(): number {
       return store.getters.getExpectedTokenConversionAmount;
