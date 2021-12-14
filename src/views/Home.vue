@@ -1,12 +1,18 @@
 <template>
-  <div class="home"></div>
+  <div class="home">
+    <UserAddress />
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import UserAddress from '@/components/UserAddress.vue';
 
 export default defineComponent({
-  name: 'Home'
+  name: 'Home',
+  components: {
+    UserAddress
+  }
 });
 </script>
 
