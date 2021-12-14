@@ -2,16 +2,27 @@
   <div class="useraddress">
     <div>Current User Address</div>
     <div>
-      <span>fetch user address</span>
+      <span>{{ userAddress }}</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useStore } from '@/store';
+import { ActionTypes } from '@/store/actions';
 
+const store = useStore();
 export default defineComponent({
-  name: 'UserAddress'
+  name: 'UserAddress',
+  computed: {
+    userAddress(): string {
+      return store.state.userAddress;
+    }
+  },
+  mounted() {
+    store.dispatch(ActionTypes.GET_ADDRESS);
+  }
 });
 </script>
 
