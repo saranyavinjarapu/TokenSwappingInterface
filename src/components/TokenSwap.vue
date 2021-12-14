@@ -22,8 +22,9 @@
         <label>Pool Price</label>
         <span class="displayvalues">{{ poolPrice }}</span>
       </div>
-      <div>
+      <div v-if="expectedTokenAmount && swapAmount">
         <label>Expected Token Amount</label>
+        <span class="displayvalues">{{ expectedTokenAmount }} &nbsp;&nbsp;Tokens</span>
       </div>
       <br />
       <div class="button_container">
@@ -58,6 +59,9 @@ export default defineComponent({
     },
     balanceValidityCheck(): string {
       return store.state.balanceValidity;
+    },
+    expectedTokenAmount(): number {
+      return store.getters.getExpectedTokenConversionAmount;
     }
   },
 
