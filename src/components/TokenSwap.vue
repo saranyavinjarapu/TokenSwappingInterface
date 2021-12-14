@@ -3,7 +3,9 @@
     <form ref="tokenswapform" @submit.prevent="false">
       <div>
         <label>Choose From Token</label>
-        <select v-model="selectFromToken"></select>
+        <select v-model="selectFromToken">
+          <option v-for="token in tokenList" :value="token" :key="token">{{ token }}</option>
+        </select>
       </div>
       <div>
         <label>Enter Amount to Swap</label>
@@ -29,7 +31,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useStore } from '@/store';
+import { ActionTypes } from '@/store/actions';
 
+const store = useStore();
 export default defineComponent({
   name: 'TokenSwap',
   data() {
@@ -38,6 +43,16 @@ export default defineComponent({
       swapAmount: '',
       selectToToken: ''
     };
+  },
+
+  computed: {
+    tokenList(): Array<string> {
+      return store.state.tokens;
+    }
+  },
+
+  mounted() {
+    store.dispatch(ActionTypes.GET_TOKENS);
   }
 });
 </script>

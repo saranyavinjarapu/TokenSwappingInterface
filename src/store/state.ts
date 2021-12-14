@@ -1,6 +1,8 @@
 export type State = {
   userAddress: string;
+  tokens: Array<string>;
 };
 export const state: State = {
-  userAddress: ''
+  userAddress: '',
+  tokens: []
 };

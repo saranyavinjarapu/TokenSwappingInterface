@@ -5,7 +5,8 @@ import { State } from './state';
 const headers = { Accept: 'application/json' };
 
 export enum ActionTypes {
-  GET_ADDRESS = 'GET_ADDRESS'
+  GET_ADDRESS = 'GET_ADDRESS',
+  GET_TOKENS = 'GET_TOKENS'
 }
 
 type AugmentedActionContext = {
@@ -14,6 +15,7 @@ type AugmentedActionContext = {
 
 export interface Actions {
   [ActionTypes.GET_ADDRESS]({ commit }: AugmentedActionContext): void;
+  [ActionTypes.GET_TOKENS]({ commit }: AugmentedActionContext): void;
 }
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -21,6 +23,12 @@ export const actions: ActionTree<State, State> & Actions = {
     await fetch('./account.json', { headers })
       .then((response) => response.json())
       .then((data) => commit(MutationTypes.SET_ADDRESS, data.address))
+      .catch((error) => console.error('Error fetching data', error));
+  },
+  async [ActionTypes.GET_TOKENS]({ commit }) {
+    await fetch('./tokens.json', { headers })
+      .then((response) => response.json())
+      .then((data) => commit(MutationTypes.SET_TOKENS, data.tokens))
       .catch((error) => console.error('Error fetching data', error));
   }
 };
