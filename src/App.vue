@@ -1,14 +1,38 @@
 <template>
-  <div class="app"><Header></Header></div>
+  <div class="app" :class="mode">
+    <Header :mode="mode" @toggle="toggle" />
+  </div>
 </template>
 
 <script>
 import Header from '@/components/Header';
 
 export default {
-  components: {
-    Header,
+  data() {
+    return {
+      mode: 'light'
+    };
   },
+  components: {
+    Header
+  },
+  created() {
+    window.addEventListener('keyup', this.keyPress);
+  },
+  methods: {
+    keyPress(e) {
+      if (e.key === 't') {
+        this.toggle();
+      }
+    },
+    toggle() {
+      if (this.mode === 'dark') {
+        this.mode = 'light';
+      } else {
+        this.mode = 'dark';
+      }
+    }
+  }
 };
 </script>
 
