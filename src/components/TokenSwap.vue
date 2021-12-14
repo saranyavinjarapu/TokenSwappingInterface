@@ -1,6 +1,6 @@
 <template>
   <div class="tokenswap">
-    <form ref="tokenswapform" @submit.prevent="false">
+    <form ref="tokenswapform" @submit.prevent="submitForm">
       <div>
         <label>Choose From Token</label>
         <select v-model="selectFromToken" @change="onTokenSelect('fromToken')">
@@ -68,6 +68,7 @@ export default defineComponent({
   mounted() {
     store.dispatch(ActionTypes.GET_TOKENS);
   },
+
   methods: {
     async onTokenSelect(tokenType: string): Promise<void> {
       if (tokenType == 'fromToken') this.checkBalance();
@@ -76,6 +77,7 @@ export default defineComponent({
         store.dispatch(ActionTypes.GET_POOL_PRICE, [this.selectFromToken, this.selectToToken]);
       }
     },
+
     async swapAmountEntered(): Promise<void> {
       if (this.selectFromToken) {
         this.checkBalance();
@@ -84,6 +86,10 @@ export default defineComponent({
 
     async checkBalance(): Promise<void> {
       store.dispatch(ActionTypes.CHECK_BALANCE, [this.selectFromToken, this.swapAmount]);
+    },
+    async submitForm(event: any) {
+      alert('Token Swap From ' + this.selectFromToken + ' To ' + this.selectToToken + 'Successful');
+      window.location.reload();
     }
   }
 });
@@ -145,6 +151,17 @@ export default defineComponent({
   color: #ffffff;
 }
 
+.tokenswap .errormessage {
+  background: #fce4e4;
+  border: 1px solid #fcc2c3;
+  color: #cc0033;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  padding: 5px;
+  margin-left: 10px;
+}
+
 .tokenswap .displayvalues {
   border: 1px solid #858585;
   padding: 5px 25px 5px 25px;
@@ -158,14 +175,12 @@ export default defineComponent({
   opacity: 0.4;
 }
 
-.tokenswap .errormessage {
-  background: #fce4e4;
-  border: 1px solid #fcc2c3;
-  color: #cc0033;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-  padding: 5px;
-  margin-left: 10px;
+@media only screen and (max-width: 700px) {
+  .tokenswap .errormessage {
+    display: block;
+    margin-top: 10px;
+    text-align: center;
+    padding: 6px;
+  }
 }
 </style>
