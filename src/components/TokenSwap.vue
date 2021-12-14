@@ -27,7 +27,7 @@
         <span class="displayvalues">{{ expectedTokenAmount }} &nbsp;&nbsp;Tokens</span>
       </div>
       <br />
-      <div class="button_container">
+      <div v-if="expectedTokenAmount && swapAmount" class="button_container">
         <button type="submit">SWAP</button>
       </div>
     </form>
