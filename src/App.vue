@@ -47,5 +47,10 @@ body {
   min-height: 100vh;
   background: #ffb6c1;
   color: #15202b;
+  transition: background 0.3s ease-in-out;
+}
+.dark {
+  background: #343044;
+  color: #e8e8e8;
 }
 </style>
