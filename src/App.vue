@@ -1,11 +1,13 @@
 <template>
   <div class="app" :class="mode">
     <Header :mode="mode" @toggle="toggle" />
+    <Home :mode="mode"></Home>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header';
+import Home from '@/views/Home.vue';
 
 export default {
   data() {
@@ -14,7 +16,8 @@ export default {
     };
   },
   components: {
-    Header
+    Header,
+    Home
   },
   created() {
     window.addEventListener('keyup', this.keyPress);
