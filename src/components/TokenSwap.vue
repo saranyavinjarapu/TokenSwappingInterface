@@ -10,6 +10,7 @@
       <div>
         <label>Enter Amount to Swap</label>
         <input type="number" v-model="swapAmount" @input="swapAmountEntered" />
+        <span className="errormessage" v-if="balanceValidityCheck">{{ balanceValidityCheck }}</span>
       </div>
       <div>
         <label>Choose To Token</label>
@@ -54,6 +55,9 @@ export default defineComponent({
     },
     poolPrice(): number | string {
       return store.getters.getPoolPrice;
+    },
+    balanceValidityCheck(): string {
+      return store.state.balanceValidity;
     }
   },
 
