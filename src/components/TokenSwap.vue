@@ -9,7 +9,7 @@
       </div>
       <div>
         <label>Enter Amount to Swap</label>
-        <input type="number" v-model="swapAmount" />
+        <input type="number" v-model="swapAmount" @input="swapAmountEntered" />
       </div>
       <div>
         <label>Choose To Token</label>
@@ -62,9 +62,20 @@ export default defineComponent({
   },
   methods: {
     async onTokenSelect(tokenType: string): Promise<void> {
+      if (tokenType == 'fromToken') this.checkBalance();
+
       if (this.selectFromToken && this.selectToToken) {
         store.dispatch(ActionTypes.GET_POOL_PRICE, [this.selectFromToken, this.selectToToken]);
       }
+    },
+    async swapAmountEntered(): Promise<void> {
+      if (this.selectFromToken) {
+        this.checkBalance();
+      }
+    },
+
+    async checkBalance(): Promise<void> {
+      store.dispatch(ActionTypes.CHECK_BALANCE, [this.selectFromToken, this.swapAmount]);
     }
   }
 });
