@@ -3,7 +3,7 @@
     <form ref="tokenswapform" @submit.prevent="false">
       <div>
         <label>Choose From Token</label>
-        <select v-model="selectFromToken">
+        <select v-model="selectFromToken" @change="onTokenSelect('fromToken')">
           <option v-for="token in tokenList" :value="token" :key="token">{{ token }}</option>
         </select>
       </div>
@@ -13,12 +13,13 @@
       </div>
       <div>
         <label>Choose To Token</label>
-        <select v-model="selectToToken">
+        <select v-model="selectToToken" @change="onTokenSelect('toToken')">
           <option v-for="token in tokenList" :value="token" :key="token">{{ token }}</option>
         </select>
       </div>
-      <div>
+      <div v-if="selectFromToken && selectToToken && poolPrice">
         <label>Pool Price</label>
+        <span class="displayvalues">{{ poolPrice }}</span>
       </div>
       <div>
         <label>Expected Token Amount</label>
@@ -50,11 +51,21 @@ export default defineComponent({
   computed: {
     tokenList(): Array<string> {
       return store.state.tokens;
+    },
+    poolPrice(): number | string {
+      return store.getters.getPoolPrice;
     }
   },
 
   mounted() {
     store.dispatch(ActionTypes.GET_TOKENS);
+  },
+  methods: {
+    async onTokenSelect(tokenType: string): Promise<void> {
+      if (this.selectFromToken && this.selectToToken) {
+        store.dispatch(ActionTypes.GET_POOL_PRICE, [this.selectFromToken, this.selectToToken]);
+      }
+    }
   }
 });
 </script>
