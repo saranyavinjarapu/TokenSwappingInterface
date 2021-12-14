@@ -13,7 +13,9 @@
       </div>
       <div>
         <label>Choose To Token</label>
-        <select v-model="selectToToken"></select>
+        <select v-model="selectToToken">
+          <option v-for="token in tokenList" :value="token" :key="token">{{ token }}</option>
+        </select>
       </div>
       <div>
         <label>Pool Price</label>
