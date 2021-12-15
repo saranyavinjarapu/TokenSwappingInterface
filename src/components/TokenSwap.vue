@@ -9,7 +9,7 @@
       </div>
       <div>
         <label>Enter Amount to Swap</label>
-        <input type="number" v-model="swapAmount" @input="swapAmountEntered" />
+        <input type="number" v-model="swapAmount" @input="swapAmountEntered" onkeydown="return event.keyCode !== 69" />
         <span className="errormessage" v-if="balanceValidityCheck">{{ balanceValidityCheck }}</span>
       </div>
       <div>
