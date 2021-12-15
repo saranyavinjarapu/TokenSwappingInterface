@@ -124,8 +124,8 @@ export default defineComponent({
 }
 
 .tokenswap form input {
-  padding: 5px 20px 5px 20px;
-  width: 55px;
+  padding: 5px 0px 5px 20px;
+  width: 75px;
   font-size: 15px;
   font-family: Arial, sans-serif;
 }
