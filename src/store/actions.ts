@@ -4,6 +4,13 @@ import { State } from './state';
 
 const headers = { Accept: 'application/json' };
 
+const fetchCallCustom = async (url: string): Promise<any> => {
+  return await fetch(url, { headers })
+    .then((response) => response.json())
+    .then((data) => data)
+    .catch((error) => console.error('Error fetching data', error));
+};
+
 export enum ActionTypes {
   GET_ADDRESS = 'GET_ADDRESS',
   GET_TOKENS = 'GET_TOKENS',
@@ -24,56 +31,48 @@ export interface Actions {
 
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.GET_ADDRESS]({ commit }) {
-    await fetch('./account.json', { headers })
-      .then((response) => response.json())
-      .then((data) => commit(MutationTypes.SET_ADDRESS, data.address))
-      .catch((error) => console.error('Error fetching data', error));
+    const url = './account.json';
+    fetchCallCustom(url).then((result) => commit(MutationTypes.SET_ADDRESS, result.address));
   },
   async [ActionTypes.GET_TOKENS]({ commit }) {
-    await fetch('./tokens.json', { headers })
-      .then((response) => response.json())
-      .then((data) => commit(MutationTypes.SET_TOKENS, data.tokens))
-      .catch((error) => console.error('Error fetching data', error));
+    const url = './tokens.json';
+    fetchCallCustom(url).then((result) => commit(MutationTypes.SET_TOKENS, result.tokens));
   },
   async [ActionTypes.GET_POOL_PRICE]({ commit }, payload: Array<string>) {
     const [fromToken, toToken] = payload;
+    const url = './pools.json';
 
-    await fetch('./pools.json', { headers })
-      .then((response) => response.json())
-      .then((data) => {
-        const filteredPoolData = data.pools.filter(
-          (element: any) => element.tokenA == fromToken && element.tokenB == toToken
-        );
-        const poolPrice = filteredPoolData.length == 1 ? filteredPoolData[0].price : 0;
-        commit(MutationTypes.SET_POOL_PRICE, poolPrice);
-      })
-      .catch((error) => console.error('Error fetching data', error));
+    fetchCallCustom(url).then((result) => {
+      const poolPriceFromToToken = result.pools.filter(
+        (element: any) => element.tokenA == fromToken && element.tokenB == toToken
+      );
+      const poolPrice = poolPriceFromToToken.length == 1 ? poolPriceFromToToken[0].price : 0;
+      commit(MutationTypes.SET_POOL_PRICE, poolPrice);
+    });
   },
   async [ActionTypes.CHECK_BALANCE]({ commit }, payload: Array<any>) {
     const [fromToken, swapAmount] = payload;
+    const url = './balances.json';
 
-    await fetch('./balances.json', { headers })
-      .then((response) => response.json())
-      .then((data) => {
-        const filteredBalanceDataForSourceToken = data.balances.filter((element: any) => element.token == fromToken);
-        let balanceValidity = '';
+    fetchCallCustom(url).then((result) => {
+      const filteredBalanceDataForSourceToken = result.balances.filter((element: any) => element.token == fromToken);
+      let balanceValidity = '';
 
-        if (filteredBalanceDataForSourceToken.length == 1 && swapAmount) {
-          const balanceAmount = parseFloat(filteredBalanceDataForSourceToken[0].balance);
+      if (filteredBalanceDataForSourceToken.length == 1 && swapAmount) {
+        const balanceAmount = parseFloat(filteredBalanceDataForSourceToken[0].balance);
 
-          if (Math.sign(parseFloat(swapAmount)) == -1) {
-            balanceValidity = 'Negative numbers are not allowed';
-          } else if (balanceAmount >= swapAmount) {
-            balanceValidity = 'Valid';
-            commit(MutationTypes.SET_SWAP_AMOUNT, swapAmount);
-          } else {
-            balanceValidity = 'Balance Not Sufficient For Swap';
-          }
-        } else if (filteredBalanceDataForSourceToken.length == 0) {
-          balanceValidity = 'No Balance Available For ' + fromToken;
+        if (Math.sign(parseFloat(swapAmount)) == -1) {
+          balanceValidity = 'Negative numbers are not allowed';
+        } else if (balanceAmount >= swapAmount) {
+          balanceValidity = 'Valid';
+          commit(MutationTypes.SET_SWAP_AMOUNT, swapAmount);
+        } else {
+          balanceValidity = 'Balance Not Sufficient For Swap';
         }
-        commit(MutationTypes.SET_BALANCE_VALIDITY, balanceValidity);
-      })
-      .catch((error) => console.error('Error fetching data', error));
+      } else if (filteredBalanceDataForSourceToken.length == 0) {
+        balanceValidity = 'No Balance Available For ' + fromToken;
+      }
+      commit(MutationTypes.SET_BALANCE_VALIDITY, balanceValidity);
+    });
   }
 };
