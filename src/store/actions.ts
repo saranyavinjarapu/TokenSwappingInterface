@@ -4,7 +4,7 @@ import { State } from './state';
 
 const headers = { Accept: 'application/json' };
 
-const fetchCallCustom = async (url: string): Promise<any> => {
+const fetchData = async (url: string): Promise<any> => {
   return await fetch(url, { headers })
     .then((response) => response.json())
     .then((data) => data)
@@ -32,18 +32,18 @@ export interface Actions {
 export const actions: ActionTree<State, State> & Actions = {
   async [ActionTypes.GET_ADDRESS]({ commit }) {
     const url = './account.json';
-    fetchCallCustom(url).then((result) => commit(MutationTypes.SET_ADDRESS, result.address));
+    fetchData(url).then((resultData) => commit(MutationTypes.SET_ADDRESS, resultData.address));
   },
   async [ActionTypes.GET_TOKENS]({ commit }) {
     const url = './tokens.json';
-    fetchCallCustom(url).then((result) => commit(MutationTypes.SET_TOKENS, result.tokens));
+    fetchData(url).then((resultData) => commit(MutationTypes.SET_TOKENS, resultData.tokens));
   },
   async [ActionTypes.GET_POOL_PRICE]({ commit }, payload: Array<string>) {
     const [fromToken, toToken] = payload;
     const url = './pools.json';
 
-    fetchCallCustom(url).then((result) => {
-      const poolPriceFromToToken = result.pools.filter(
+    fetchData(url).then((resultData) => {
+      const poolPriceFromToToken = resultData.pools.filter(
         (element: any) => element.tokenA == fromToken && element.tokenB == toToken
       );
       const poolPrice = poolPriceFromToToken.length == 1 ? poolPriceFromToToken[0].price : 0;
@@ -54,8 +54,10 @@ export const actions: ActionTree<State, State> & Actions = {
     const [fromToken, swapAmount] = payload;
     const url = './balances.json';
 
-    fetchCallCustom(url).then((result) => {
-      const filteredBalanceDataForSourceToken = result.balances.filter((element: any) => element.token == fromToken);
+    fetchData(url).then((resultData) => {
+      const filteredBalanceDataForSourceToken = resultData.balances.filter(
+        (element: any) => element.token == fromToken
+      );
       let balanceValidity = '';
 
       if (filteredBalanceDataForSourceToken.length == 1 && swapAmount) {
