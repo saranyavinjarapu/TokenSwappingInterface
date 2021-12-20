@@ -178,7 +178,7 @@ export default defineComponent({
 @media only screen and (max-width: 700px) {
   .tokenswap .errormessage {
     display: block;
-    margin-top: 10px;
+    margin-top: 25px;
     text-align: center;
     padding: 6px;
   }
