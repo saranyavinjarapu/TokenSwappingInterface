@@ -185,7 +185,7 @@ export default defineComponent({
   .tokenswap .displayvalues {
     padding: 10px;
     font-size: 15px;
-    width: 100px;
+    width: 150px;
   }
 }
 </style>
