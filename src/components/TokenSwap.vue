@@ -87,7 +87,7 @@ export default defineComponent({
     async checkBalance(): Promise<void> {
       store.dispatch(ActionTypes.CHECK_BALANCE, [this.selectFromToken, this.swapAmount]);
     },
-    async submitForm(event: any) {
+    async submitForm() {
       alert('Token Swap From ' + this.selectFromToken + ' To ' + this.selectToToken + 'Successful');
       window.location.reload();
     }
@@ -181,6 +181,11 @@ export default defineComponent({
     margin-top: 10px;
     text-align: center;
     padding: 6px;
+  }
+  .tokenswap .displayvalues {
+    padding: 10px;
+    font-size: 15px;
+    width: 100px;
   }
 }
 </style>

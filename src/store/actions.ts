@@ -26,7 +26,7 @@ export interface Actions {
   [ActionTypes.GET_ADDRESS]({ commit }: AugmentedActionContext): void;
   [ActionTypes.GET_TOKENS]({ commit }: AugmentedActionContext): void;
   [ActionTypes.GET_POOL_PRICE]({ commit }: AugmentedActionContext, payload: Array<string>): void;
-  [ActionTypes.CHECK_BALANCE]({ commit }: AugmentedActionContext, payload: Array<any>): void;
+  [ActionTypes.CHECK_BALANCE]({ commit }: AugmentedActionContext, payload: Array<string | number>): void;
 }
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -50,8 +50,11 @@ export const actions: ActionTree<State, State> & Actions = {
       commit(MutationTypes.SET_POOL_PRICE, poolPrice);
     });
   },
-  async [ActionTypes.CHECK_BALANCE]({ commit }, payload: Array<any>) {
-    const [fromToken, swapAmount] = payload;
+  async [ActionTypes.CHECK_BALANCE]({ commit }, payload: Array<string | number>) {
+    //const [swapAmount] = payload;
+    const fromToken: string = payload[0] as string;
+    const swapAmount: number = payload[1] as number;
+    console.log('pay is : ', fromToken, swapAmount);
     const url = './balances.json';
 
     fetchData(url).then((resultData) => {
@@ -63,7 +66,7 @@ export const actions: ActionTree<State, State> & Actions = {
       if (filteredBalanceDataForSourceToken.length == 1 && swapAmount) {
         const balanceAmount = parseFloat(filteredBalanceDataForSourceToken[0].balance);
 
-        if (Math.sign(parseFloat(swapAmount)) == -1) {
+        if (Math.sign(swapAmount) == -1) {
           balanceValidity = 'Negative numbers are not allowed';
         } else if (balanceAmount >= swapAmount) {
           balanceValidity = 'Valid';
