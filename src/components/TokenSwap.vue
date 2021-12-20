@@ -183,7 +183,7 @@ export default defineComponent({
     padding: 6px;
   }
   .tokenswap .displayvalues {
-    padding: 10px;
+    padding: 5px;
     font-size: 15px;
     width: 150px;
   }
