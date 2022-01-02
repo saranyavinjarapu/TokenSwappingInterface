@@ -4,7 +4,26 @@ import { State } from './state';
 
 const headers = { Accept: 'application/json' };
 
-const fetchData = async (url: string): Promise<any> => {
+type PoolDataType = {
+  poolId: number;
+  tokenA: string;
+  tokenB: string;
+  price: number;
+};
+
+type BalancesDataType = {
+  token: string;
+  balance: string;
+};
+
+type TokenDataType = {
+  address: string;
+  tokens: Array<string>;
+  pools: Array<PoolDataType>;
+  balances: Array<BalancesDataType>;
+};
+
+const fetchData = async (url: string): Promise<TokenDataType> => {
   return await fetch(url, { headers })
     .then((response) => response.json())
     .then((data) => data)
@@ -51,10 +70,8 @@ export const actions: ActionTree<State, State> & Actions = {
     });
   },
   async [ActionTypes.CHECK_BALANCE]({ commit }, payload: Array<string | number>) {
-    //const [swapAmount] = payload;
     const fromToken: string = payload[0] as string;
     const swapAmount: number = payload[1] as number;
-    console.log('pay is : ', fromToken, swapAmount);
     const url = './balances.json';
 
     fetchData(url).then((resultData) => {
