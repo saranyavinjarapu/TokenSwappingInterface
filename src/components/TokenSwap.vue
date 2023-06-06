@@ -88,7 +88,7 @@ export default defineComponent({
       store.dispatch(ActionTypes.CHECK_BALANCE, [this.selectFromToken, this.swapAmount]);
     },
     async submitForm() {
-      alert('Token Swap From ' + this.selectFromToken + ' To ' + this.selectToToken + 'Successful');
+      alert('Token Swap From ' + this.selectFromToken + ' To ' + this.selectToToken + ' Successful');
       window.location.reload();
     }
   }
